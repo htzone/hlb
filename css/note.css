@@ -1,0 +1,245 @@
+@charset "utf-8";
+/* CSS Document */
+
+#div_page{
+	float:left;
+}
+
+#header{
+	float:left;
+	background:#fff;
+	min-height:100px;
+	width:100%;
+	padding:0 2em;
+	box-shadow: -5px 4px 50px -21px #000;
+	margin-top:1em;
+}
+
+#tieba_logo img{
+	float:left;
+	margin-top:9px;
+	width:80px;
+	height:80px;
+	border:2px solid #EA6F4D;	
+}
+
+#focus{
+	float:left;
+	height:82px;
+	margin-top:30px;
+	margin-left:10px;
+}
+
+#focus input{
+	height:40px;
+	width:70px;
+	background:#51a460;
+	border-radius:5px;
+	font-weight:700;
+	font-size:large;
+	margin-left:5px;
+	color:#FFF;
+	border: 0 solid #000000;
+}
+
+#focus input:hover{
+	background:#ff0808;
+	color:#fff;
+	cursor:pointer;
+}
+
+#tieba_info{
+	float:left;
+	min-height:100px;
+	margin:0 10px;
+	padding:0;
+	line-height:100px;
+	
+}
+
+#tieba_info span{
+	font-size:20px;
+	font-weight:700;
+	margin:auto 10px;
+}
+
+#content{
+	float:left;
+	background:#fff;
+	min-height:450px;
+	width:100%;
+	padding:0 2em;
+	box-shadow: -5px 4px 50px -21px #000;
+	margin-top:1em;
+	
+}
+
+#content #header_operation{
+	float:left;
+	width:100%;
+	min-height:40px;
+	text-align:center;
+	line-height:40px;
+	border-bottom:1px solid #E9EBF0;
+}
+
+#content #header_operation .btn_background{
+	text-decoration:none;
+	padding:3px;
+	background:#51a460;
+	border-radius:5px;
+	margin-left:5px;
+	color:#FFF;
+	border: 0 solid #000000;
+}
+
+#content #header_operation .btn_background:hover{
+	background:#ff0808;
+	color:#fff;
+	cursor:pointer;
+}
+
+.comment_list{
+	float:left;
+	width:100%;
+	min-height:110px;
+	background:#F6F7FB;
+	border-bottom:1px solid #E9EBF0;
+}
+
+.comment_list .left{
+	float:left;
+	width:20%;
+	padding:0;
+}
+
+.comment_list .right{
+	padding:10px 0;
+	min-height:100px;
+	text-align:left;
+	float:left;
+	background:#FFF;
+	width:80%;
+}
+
+.comment_list .left img{
+	margin-top:10px;
+	width:78px;
+	height:78px;
+	border-radius:5px;
+	border:2px solid #CCC;
+}
+
+.comment_list .left a{
+	text-decoration:none;
+}
+
+.comment_list .left a:hover{
+	text-decoration:underline;
+}
+
+.comment_list .left #lzflag{
+	float:left;
+	width:100%;
+	background:#EA6F4D;
+	border-bottom-left-radius:15px;
+	border-bottom-right-radius:22px;
+	color:#FFF;
+	margin:0;
+	padding:2px;
+	font-weight:700;
+}
+
+.comment_list .right #num{
+	float:right;
+	clear:left;
+	margin:0 5px;
+	padding:0;
+	font-weight:800;
+}
+
+.comment_list .right #ctt{
+	float:left;
+	width:100%;
+	margin:0 10px;
+	clear:right;
+}
+
+.comment_list .right #ctt img{
+	width:100px;
+	height:120px;
+	margin:5px 2px;
+}
+
+.comment_list .right #ctt img:hover{
+	cursor:pointer;
+}
+
+.comment_list .right #info{
+	float:right;
+	color:#03C;
+	margin-top:100px;
+	clear:both;
+}
+
+.return{
+}
+
+.return:hover{
+	cursor:pointer;
+	color:#F93;
+}
+
+#edit{
+	float:left;
+	background:#F6F7FB;
+	min-height:100px;
+	width:100%;
+	padding:0 2em;
+	margin:1em 0;
+	text-align:center;
+}
+
+
+#edit form{
+	float:left;
+	margin:10px 0;
+	width:100%;
+}
+
+#edit form table{
+	width:100%;
+}
+
+#edit form table .textarea{
+	width:60%;
+}
+#edit form table .textsubmit{
+	width:100px;
+	height:30px;
+	font-size:15px;
+	font-weight:600;
+}
+
+#edit form table span{
+	padding:2px;
+	margin:2px;
+	border-right:1px solid #999;
+}
+
+#edit form table span:hover{
+	cursor:pointer;
+	color:#F93;
+}
+
+.reply_div{
+	width:100%;
+	float:right;
+	background:#e5eecc;
+	text-align:center;
+	display:none;
+	height:70px;
+}
+
+
+

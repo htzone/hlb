@@ -1,0 +1,100 @@
+@charset "utf-8";
+/* CSS Document */
+
+#register_div{
+	float:left;
+	width:100%;
+	margin:0 auto;
+	min-height:600px;
+	background:#fff;
+	box-shadow: -10px 8px 50px -22px #000;
+	
+}
+
+#logo{
+	float:left;
+	width:100%;
+	text-align:center;
+}
+
+#logo img{
+}
+
+#register_div form table{
+	padding:5em;
+	width:100%;
+	text-align:center;
+}
+
+.left{
+	width:50%;
+	text-align:right;
+}
+
+.right{
+	width:50%;
+	text-align:left;
+}
+
+#register_div form table td{
+	padding:1em;
+}
+
+#register_div form table td img{
+	width:80px;
+	height:80px;
+}
+
+#register_div form table td .btn{
+	padding:5px 10px;
+}
+
+.bawu{
+	height:60px;
+	background:#999;
+	border-radius:10px;
+	padding:10px 10px;
+}
+
+.delete{
+	height:25px;
+	font-size:2px;
+	background:#999;
+	color:#F33;
+	border:0;
+}
+
+.delete:hover{
+	color:#FC3;
+}
+
+#add{
+	background:#51a460;
+	border-radius:5px;
+	padding:10px;
+	color:#FFF;
+}
+
+#add:hover{
+	background:#ff0808;
+	cursor:pointer;	
+}
+
+#add_div{
+	display:none;
+	margin-top:30px;
+}
+
+.update{
+	background:#51a460;
+	border-radius:5px;
+	padding:5px 15px;
+	color:#FFF;
+	text-decoration:none;
+}
+
+.update:hover{
+	background:#ff0808;
+	cursor:pointer;
+}
+

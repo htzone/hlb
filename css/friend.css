@@ -1,0 +1,83 @@
+@charset "utf-8";
+/* CSS Document */
+#content{
+	float:left;
+	background:#F6F7FB;
+	min-height:500px;
+	width:100%;
+	padding:0;
+	box-shadow: -5px 4px 50px -21px #000;
+	margin-top:1em;
+	text-align:left;
+}
+
+#header{
+	width:100%;
+	height:100px;
+	background:#999;
+}
+
+#header #title{
+	float:left;
+	width:100%;
+	text-align:center;
+	font-size:24px;
+	font-weight:650;
+	padding-top:10px;
+	color:#FFF;
+}
+
+#header #head_sculptrue{
+	position:relative;
+	top:30px;
+	left:5%;
+}
+
+#header #head_sculptrue img{
+	width:100px;
+	height:100px;
+	border:2px solid #CCC;
+	border-radius:5px;
+}
+
+#personal_info{
+	position:relative;
+	top:70px;
+	left:5%;
+	width:100%;
+	text-align:left;
+}
+
+#personal_info span{
+	margin-top:10px;
+	padding:5px 10px;
+	float:left;
+	background:#CCC;
+	border-radius:5px;
+	margin-left:10px;
+	text-decoration:none;
+}
+
+#personal_info span:hover{
+	background:#F93;
+}
+
+#personal_info span a{
+	text-decoration:none;
+	color:#09F;
+}
+
+.line{
+	height:1px;
+	width:90%;
+	background:#666;
+}
+
+#info_div{
+	position:relative;
+	top:-15px;
+	left:16%;
+	color:#06C;
+	font-weight:550;
+	font-size:16px;
+}

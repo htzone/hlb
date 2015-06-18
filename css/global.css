@@ -1,0 +1,88 @@
+@charset "utf-8";
+/* CSS Document */
+textarea{
+	resize:none;
+}
+
+body{
+	margin:0;
+	padding:0;
+	text-align:center;
+	font:12px Arial, 宋体;
+}
+
+/*网页背景色*/
+.bgcolor{
+	background:#EA6F4D;
+}
+
+/*布局容器*/
+.container{
+	width:80%;
+	margin:0 auto;
+}
+
+/*----顶部菜单----*/
+#top_menu{
+	float:left;
+	width:100%;
+	min-height:30px;
+}
+
+#top_menu ul{
+	float:right;
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+
+#top_menu ul li{
+	float:right;
+	width:40px;
+	display:block;
+	font-size:large;
+	text-align:right;
+	line-height:30px;
+}
+
+#top_menu ul li a{
+	text-decoration:none;
+	color:#FFF;
+	cursor:pointer;
+}
+
+#top_menu ul li a:hover{
+	color:#09F;
+}
+
+#top_menu .menudiv{
+	float:right;
+	width:1px;
+	height:20px;
+	background:#888;
+	margin-left:5px;
+	margin-right:5px;
+	margin-top:5px;
+}
+/*---顶部菜单end---*/
+
+
+/*空白区*/
+.nav{
+	height:30px;
+	width:100%;
+	clear:both;
+}
+
+/*页脚*/
+#footer{
+	float:left;
+	background:url(../images/hed-bg.jpg)no-repeat;
+	padding:1em 2em;
+	background-size:cover;
+	margin-top:2em;
+	margin-bottom:2em;
+	min-height:30px;
+	line-height:30px;
+	width:100%;
+}
