@@ -1,5 +1,6 @@
 <?php 
 require_once 'class/myutil.class.php';
+session_start();
 //初始化全局变量
 $user_id = -1;
 $islogined = false;
@@ -21,9 +22,10 @@ if(isset($_GET["tieba_id"])){
 if(isset($_GET["page"])){
 	$current_page = $_GET["page"];
 }
-
-$user_id = 5;
-$islogined = true;
+// $post_id =1;
+// $tieba_id =1;
+// $user_id = 5;
+// $islogined = true;
 ?>
 
 <!DOCTYPE html>
@@ -213,17 +215,46 @@ $islogined = true;
         <!--content 结束-->
         
         <!--edit 开始-->
-        <div id="edit">
-        	<h2 style="float:left;">发表回复</h2>
-            <form method="" action="">
+        
+        <?php 
+        //显示跟帖表单
+        if($islogined){
+        	echo "
+			<div id='edit'>
+        	<h2 style='float:left;'>发表回复</h2>
+            <form method='post' action='sendposthandle.php'>
                     <table>
+					<input type='hidden' name='action' value='2'/>
+					<input type='hidden' name='post_id' value='$post_id'/>
+					<input type='hidden' name='tieba_id' value='$tieba_id'/>
                     <tr><td><span>表情</span><span>图片</span></td></tr>
-                    <tr><td><textarea id="textarea" name="xxxx" class="textarea" rows="6" ></textarea></td></tr>
-                    <tr><td><input class="textsubmit" type="submit" value="提交" /></td></tr>
+                    <tr><td><textarea id='textarea' name='content' class='textarea' rows='6' ></textarea></td></tr>
+                    <tr><td><input class='textsubmit' type='submit' value='提交' /></td></tr>
                     </table>  
              </form>
-        </div>
+        	</div>";
+        }
+        else{
+        	echo "
+			<div id='edit'>
+        	<h2 style='float:left;'>发表回复</h2>
+            <form method='post' action='sendposthandle.php'>
+                    <table>
+                    <tr><td><span>表情</span><span>图片</span></td></tr>
+                    <tr><td><textarea id='textarea' name='content' class='textarea' rows='6' ></textarea></td></tr>
+                    <tr><td><input class='textsubmit' type='submit' value='提交' disabled='disabled'/></td></tr>
+					<tr><td><h3>请先<a href='login.php?isnote=1&post_id=$post_id&tieba_id=$tieba_id'>登录</a>再发表帖子</h3></td></tr>
+                    </table> 
+             </form>
+        	</div>";
+        }
+        ?>     
         <!--edit 结束-->
+        
+        <?php 
+        
+        
+        ?>
         
     </div>
 

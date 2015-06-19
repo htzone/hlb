@@ -5,6 +5,37 @@ function __autoload($className){
 
 class MyUtil{
 	
+	public static function getUri($query){
+		$request_uri = $_SERVER["REQUEST_URI"];
+		$url = strstr($request_uri, "?")?$request_uri:$request_uri."?";
+	
+		if(is_array($query)){
+			$url .= http_build_query($query);
+		}
+		else if($query != ""){
+			$url .= "&".trim($query, "?&");
+		}
+	
+		$arr = parse_url($url);
+	
+		if(isset($arr["query"])){
+			parse_str($arr["query"], $arrs);
+			unset($arrs["page"]);
+			$url = $arr["path"]."?".http_build_query($arrs);
+		}
+	
+		if(strstr($url, "?")){
+			if(substr($url, -1) != '?'){
+				$url = $url.'&';
+			}
+		}
+		else{
+			$url = $url.'?';
+		}
+	
+		return $url;
+	}
+	
 	public static function checkIsFloorHost($post_id, $user_id){
 		$create_user_id = null;
 		$sql = "select create_user_id from post where id = {$post_id}";

@@ -1,5 +1,6 @@
 <?php 
 require_once 'class/myutil.class.php';
+session_start();
 //初始化全局变量
 $user_id = -1;
 $islogined = false;

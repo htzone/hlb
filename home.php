@@ -1,6 +1,6 @@
 <?php 
 require_once 'class/myutil.class.php';
-
+session_start();
 /*全局变量初始化*/
 //初始化贴吧id
 $tieba_id = -1;
@@ -15,8 +15,6 @@ $pre_page_num = 10;
 //初始化数据库
 $db = MyUtil::getDB();
 
-session_start();
-
 /*获取贴吧id和用户id*/
 if(isset($_GET["tieba_id"])){
 	$tieba_id = $_GET["tieba_id"];
@@ -24,13 +22,13 @@ if(isset($_GET["tieba_id"])){
 
 if(isset($_SESSION["user_id"])){
 	$user_id = $_SESSION["user_id"];
-	$logined = true;
+	$islogined = true;
 }
 
 //自己模拟数据
 $tieba_id = 1;
-$user_id = 5;
-$islogined = true;
+// $user_id = 5;
+// $islogined = true;
 
 //如果登录了，检查用户是否具有管理权限
 if($islogined){
@@ -150,6 +148,8 @@ if($islogined){
         	$isFine = $row["isFine"];
         	$user_name = $row["name"];
         	$image_url = $row["image_url"];
+        	
+        	$follow_num = MyUtil::getFollowNumFromTiezi($post_id);
         	echo "
 				<div class='note_list'>
             	<div class='left'>";
@@ -161,7 +161,7 @@ if($islogined){
         		echo "<span>精</span>";
         	}     
             echo "
-				<span>23712</span>      
+				<span>{$follow_num}</span>      
                 </div>
                 <div class='right'>
                 <a href='note.php?post_id=$post_id&tieba_id=$tieba_id'>{$row["tiezi_name"]}</a>
@@ -196,8 +196,10 @@ if($islogined){
         	echo "<div id='edit'>
         	<h2 style='float:left;'>发表帖子</h2>
             <div id='edit_div'>
-                <form method='post' action='home.php'>
+                <form method='post' action='sendposthandle.php'>
                         <table>
+						<input type='hidden' name='action' value='1'/>
+						<input type='hidden' name='tieba_id' value='$tieba_id'/>
                         <tr><td class='title_style'>标题</td></tr>
                         <tr><td><textarea id='textarea1' name='title' class='textarea' rows='1' ></textarea></td></tr>
                         <tr><td class='title_style'>内容</td></tr>
@@ -213,7 +215,7 @@ if($islogined){
         	echo "<div id='edit'>
         	<h2 style='float:left;'>发表帖子</h2>
             <div id='edit_div'>
-                <form method='post' action='home.php'>
+                <form method='post' action='sendposthandle.php'>
                         <table>
                         <tr><td class='title_style'>标题</td></tr>
                         <tr><td><textarea id='textarea1' name='title' class='textarea' rows='1' ></textarea></td></tr>
@@ -221,7 +223,7 @@ if($islogined){
                         <tr><td><span>表情</span><span>图片</span></td></tr>
                         <tr><td><textarea id='textarea2' name='content' class='textarea' rows='6' value='inpuudasdasd'></textarea></td></tr>
                         <tr><td><input class='textsubmit' type='submit' value='提交' disabled='disabled' /></td></tr>
-						<tr><td><h3>请先<a href='login.php?ishome=1'>登录</a>再发表帖子</h3></td></tr>
+						<tr><td><h3>请先<a href='login.php?ishome=1&tieba_id=$tieba_id'>登录</a>再发表帖子</h3></td></tr>
                         </table>
                  </form>
             </div>
