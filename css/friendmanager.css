@@ -104,6 +104,8 @@
 	width:100%;
 	box-shadow: -5px 4px 50px -21px #000;
 	margin-top:2em;
+	min-height:400px;
+	max-height:700px;
 	overflow:scroll;
 	display:block;
 	

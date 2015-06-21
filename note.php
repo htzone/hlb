@@ -44,6 +44,80 @@ if(isset($_GET["page"])){
 		
 	  });
 	}); 
+
+	var gid = -1;
+	var content = "";
+	var user_id =-1;
+	var image_url = "";
+	var user_name = "";
+
+	function addReply(gentie_id,user_id1,image_url1,user_name1){
+		gid = gentie_id;
+		user_id = user_id1;
+		image_url = image_url1;
+		user_name = user_name1;
+		
+		content = document.getElementById("comment_content"+gid).value;
+		xmlHttp=GetXmlHttpObject()
+		if (xmlHttp==null)
+		{
+			alert ("回复失败！");
+			return
+		}
+		var url="sendposthandle.php"
+		url=url+"?content="+content
+		url=url+"&action="+3
+		url=url+"&gentie_id="+gid
+		xmlHttp.onreadystatechange=stateChanged
+		xmlHttp.open("GET",url,true)
+		xmlHttp.send(null)
+	}
+
+	function stateChanged()
+	{
+		if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
+		{	
+			var para1=document.createElement("p");
+			para1.innerHTML="<a href='friend.php?friend_id="+user_id+"'><img src='image/"+image_url+"'/>"+user_name+"</a>: "+content;
+//	 		var node1=document.createTextNode(document.getElementById("comment_content"+gid).value);
+//	 		para1.appendChild(node1);
+			para1.className='reply_content'
+			var para2=document.createElement("p");
+			var node2=document.createTextNode(xmlHttp.responseText);
+			para2.appendChild(node2);
+			para2.className='reply_time'
+
+			var element=document.getElementById("comment_div"+gid);
+			element.appendChild(para1);
+			element.appendChild(para2);
+
+			alert ("回复成功！");
+			document.getElementById("comment_content"+gid).value="";
+		}
+	}
+
+	function GetXmlHttpObject()
+	{
+		var xmlHttp=null;
+		try
+		{
+			// Firefox, Opera 8.0+, Safari
+			xmlHttp=new XMLHttpRequest();
+		}
+		catch (e)
+		{
+			//Internet Explorer
+			try
+			{
+				xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+			}
+			catch (e)
+			{
+				xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+			}
+		}
+		return xmlHttp;
+	}
 </script>
 </head>
 
@@ -79,7 +153,7 @@ if(isset($_GET["page"])){
         
         echo "
 			<div id='tieba_logo'>
-            	<a href='home.php'><img src='uploads/{$logo_url}' /></a>
+            	<a href='home.php?tieba_id=$tieba_id'><img src='uploads/{$logo_url}' /></a>
             </div>
             ";
         
@@ -127,21 +201,22 @@ if(isset($_GET["page"])){
             //第一页时才显示主贴
             if($current_page == 1){
             	//显示主贴
-            	$sql = "select post.tiezi_content,post.create_time,user.name,user.person_image,post.image_url from post,user where post.id = {$post_id} and post.create_user_id = user.id";
+            	$sql = "select post.tiezi_content,post.create_time,user.id,user.name,user.person_image,post.image_url from post,user where post.id = {$post_id} and post.create_user_id = user.id";
             	$result = $db->execute($sql);
             	//遍历结果集
             	while($row = mysql_fetch_assoc($result, MYSQL_BOTH)){
+            	$friend_id = $row["id"];
             	$user_name = $row["name"];
             	$content = $row["tiezi_content"];
             	$person_image = $row["person_image"];
-            			$image_url = $row["image_url"];
-            			$create_time = $row["create_time"];
+            	$image_url = $row["image_url"];
+            	$create_time = $row["create_time"];
             	$floor++;
             	echo "
             	<div class='comment_list'>
             	<div class='left'>
             	<span id='lzflag'>楼主</span>
-            	<a href='friend.php'>
+            	<a href='friend.php?friend_id=$friend_id'>
             	<img src='uploads/{$person_image}'/>
             	<p>{$user_name}</p>
             	</a>
@@ -184,7 +259,7 @@ if(isset($_GET["page"])){
             		echo "<span id='lzflag'>楼主</span>";
             	}
             	echo       
-            	"<a href='friend.php'>
+            	"<a href='friend.php?friend_id=$follow_user_id'>
             	<img src='uploads/{$person_image}'/>
             	<p>{$user_name}</p>
             	</a>
@@ -195,22 +270,32 @@ if(isset($_GET["page"])){
             	<p id='ctt'>{$content}</p>
             	<p id='ctt'></p>
             	<p id='info'>{$create_time} <span id='' class='return'>回复</span></p>";
-//             	$sql = "select user.name,user.person_image,comment.content,comment.time from comment,user where gentie_id = {$follow_id} and comment.from_id = user.id";
-//             	$result = $db->execute($sql);
-//             	while($row = mysql_fetch_assoc($result, MYSQL_BOTH)){
-//             		$comment_user_name = $row["name"];
-//              		$coment_user_person_image[]
-//             	}
+            	$sql = "select user.id,user.name,user.person_image,comment.content,comment.time from comment,user where gentie_id = {$follow_id} and comment.from_id = user.id";
+            	$comment_result = $db->execute($sql);
+            	if($db->getResultRowsNum()){
+            		echo "<div class='replydiv'>";
+            	}
+            	else {
+            		echo "<div>";
+            	}
+            	echo "<div id='comment_div$follow_id'>";
+            	while($row1 = mysql_fetch_assoc($comment_result, MYSQL_BOTH)){
+            		$comment_user_id = $row1["id"];
+            		$comment_user_name = $row1["name"];
+             		$coment_user_person_image = $row1["person_image"];
+             		$comment_content = $row1["content"];
+             		$comment_time = $row1["time"];
+             		echo "
+            			<p class='reply_content'><a href='friend.php?friend_id=$comment_user_id'><img src='uploads/{$coment_user_person_image}'/>{$comment_user_name}</a>: {$comment_content}</p>
+            			<p class='reply_time'>{$comment_time}</p>";
+            	}
+            	echo "</div>";
             	echo 
-            	"<div class='replydiv'>
-            	<p class='reply_content'><a href=''><img src='uploads/{$person_image}'/>hetao</a>:fdasfkasdfkljsdafkljsdlf</p>
-            	<p class='reply_time'>2012-08-09 14:21:11</p>
-            	<p class='reply_content'><a href=''><img src='uploads/{$person_image}'/>hetao</a>: fdasfkasdfkljsdafkljsdlf</p>
-            	<p class='reply_time'>2012-08-09 14:21:11</p>
+            	"
             	<div class='reply_div'>		
-            	<form method='' action=''>
-            	<textarea rows='3' cols='30'></textarea>
-            	<input type='button' value='回复'/>
+            	<form>
+            	<textarea rows='3' cols='30' id='content$follow_id'></textarea>
+            	<input type='button' value='回复' '/>
             	</form>
             	</div>
             	</div>

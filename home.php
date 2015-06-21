@@ -26,7 +26,7 @@ if(isset($_SESSION["user_id"])){
 }
 
 //自己模拟数据
-$tieba_id = 1;
+// $tieba_id = 1;
 // $user_id = 5;
 // $islogined = true;
 
@@ -77,12 +77,9 @@ if($islogined){
             	<a href="index.php"><img src="images/logo.png"/></a>
             </div>
             
-            <div id="head_other">
-                <form action="" method="post">
-                    <input id="search_text" type="text" placeholder="Search.." required/>&nbsp;&nbsp;
-                    <input id="search_button" type="submit" value="进入贴吧" />
-                </form>
-            </div>
+            <?php 
+            Search::search_postbar();
+            ?>
             
             <div class="nav">
             <hr/>

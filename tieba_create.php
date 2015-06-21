@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <?php
+require_once 'class/myutil.class.php';
+$user_id = -1;
+$islogined = false;
 session_start ();
 if(isset($_SESSION['user_id'])){
- $id = $_SERVER['user_id'];
+ $user_id = $_SESSION['user_id'];
+ $islogined = true;
   }else{
  	echo "未登录";
- 		$user_id = 4;
   }
 ?>
 <html >
@@ -115,16 +118,9 @@ if(isset($_SESSION['user_id'])){
 <div class="container"><!-- top_menu 开始 -->
 <div id="top_menu">
 
-<ul>
-	<li><a href="register.php">注册</a></li>
-	<li class="menudiv"></li>
-	<li><a href="login.php">登录</a></li>
-	<li class="menudiv"></li>
-	<li><a href="personal.php">个人</a></li>
-	<li class="menudiv"></li>
-	<li><a href="index.php">主页</a></li>
-
-</ul>
+<?php 
+	MyUtil::showTopMenu($islogined);
+?>
 
 </div>
 <!-- top_menu 结束 -->

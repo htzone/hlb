@@ -1,0 +1,71 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*头部div样式*/
+#header{
+	float:left;
+	background:#fff;
+	min-height:80px;
+	width:100%;
+	padding:0em 2em;
+	box-shadow: -5px 4px 50px -21px #000;
+	margin-top:1em;
+	line-height:80px;
+}
+
+/*logo样式*/
+#top_logo{
+	float:left;
+	width:20%;
+	height:80px;
+}
+
+/*头部布局样式*/
+#search{
+	float:right;
+	width:70%;
+	text-align:left;}
+
+#search #search_text{
+	width:300px;
+	height:30px;
+}
+
+#search #search_button{
+	height:35px;
+	cursor:pointer;
+}
+
+#search #create_button{
+	height:35px;
+	text-decoration:none;
+	padding:10px 8px;
+	background:#51a460;
+	font-size:12px;
+	font-weight:600;
+	border-radius:2px;
+	margin-left:5px;
+	color:#FFF;
+	border: 0 solid #000000;
+}
+
+#search #create_button:hover{
+	background:#F90;
+	color:#fff;
+	cursor:pointer;
+}
+
+#content{
+	float:left;
+	background:#fff;
+	min-height:80px;
+	width:100%;
+	padding:0em 2em;
+	box-shadow: -5px 4px 50px -21px #000;
+	line-height:80px;
+}
+
+#content #content_search{
+	background:#c0c0c0;
+	font-size : 2em;
+}

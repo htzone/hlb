@@ -1,16 +1,26 @@
 <?php 
 require_once 'class/myutil.class.php';
-session_start();
-//初始化全局变量
+/*全局变量初始化*/
 $user_id = -1;
+//初始化是否登录标记
 $islogined = false;
-//如果session被赋值，则取出user_id的值，并设置已登录
+//是否具有管理权限
+$isManager = false;
+
+session_start();
+
+//自己模拟数据
+// $user_id = 5;
+
+/*获取用户id*/
 if(isset($_SESSION["user_id"])){
 	$user_id = $_SESSION["user_id"];
 	$islogined = true;
 }
-?>
 
+
+
+?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <!-- 网页头部 -->
@@ -20,6 +30,7 @@ if(isset($_SESSION["user_id"])){
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <link href="css/global.css" rel='stylesheet' type='text/css' />
 <link href="css/index.css" rel='stylesheet' type='text/css' />
+<script src="javascript/jquery.js"></script>
 </head>
 <!-- 主体 -->
 <body class="bgcolor">
@@ -27,10 +38,11 @@ if(isset($_SESSION["user_id"])){
 	<div class="container">
     	<!-- top_menu 开始 -->
     	<div id="top_menu">
-        <?php 
-        //显示顶部菜单
-        MyUtil::showTopMenu($islogined);
-        ?>    
+        
+           <?php 
+           MyUtil::showTopMenu($islogined);
+           ?>
+            
         </div>
         <!-- top_menu 结束 -->
         
@@ -38,15 +50,11 @@ if(isset($_SESSION["user_id"])){
 		<div id="header">
         
         	<div id="top_logo">
-            	<img src="images/logo.png"/>
+            	<a href="index.php"><img src="images/logo.png"/></a>
             </div>
-            
-            <div id="head_other">
-                <form action="" method="post">
-                    <input id="search_text" type="text" placeholder="Search.." required/>&nbsp;&nbsp;
-                    <input id="search_button" type="submit" value="进入贴吧" />
-                </form>
-            </div>
+            <?php 
+            Search::search_postbar();
+            ?>
             
         </div>
         <!-- header 结束 -->
