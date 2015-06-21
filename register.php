@@ -37,9 +37,6 @@ if (!empty($_POST['reg'])){
 	
 	$id = mysql_insert_id();
 	if($result){
-	    setcookie("uid",$id);
-	    setcookie("name",$_POST['name']);
-		setcookie("shell",md5($id.$_POST['name'].md5($_POST['password'])."kuso"));
 		session_start();
 		$_SESSION["user_id"] = $id;
 		exit("<script>alert('注册成功!');
@@ -84,7 +81,7 @@ if (!empty($_POST['reg'])){
         	<div id="logo">
             	<img src="images/logo.png"/>
             </div>
-        	<form action="" method="post">
+        	<form action="" method="post" >
             	<table>
                 	<tr>
                 		<td class="left">头像：</td>

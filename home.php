@@ -102,7 +102,7 @@ if($islogined){
 	                }
 	                echo "
 					<div id='tieba_icon'>
-                	<a href='home.php'><img src='uploads/{$logo_url}' /></a>
+                	<a href='home.php?tieba_id=$tieba_id'><img src='uploads/{$logo_url}' /></a>
                 	</div>
                 	<div id='tieba_title'>
 	                {$tieba_name}";         

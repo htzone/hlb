@@ -5,6 +5,26 @@ function __autoload($className){
 
 class MyUtil{
 	
+	public static function  getUserFaceUrl($user_id){
+		$sql = "select person_image from user where id = {$user_id}";
+		$result = DbOperator::getInstance()->execute($sql);
+		while($row = mysql_fetch_assoc($result, MYSQL_BOTH)){
+			$user_face_url = $row["person_image"];
+		}
+		
+		return $user_face_url;
+	}
+	
+	public static function  getUserName($user_id){
+		$sql = "select name from user where id = {$user_id}";
+		$result = DbOperator::getInstance()->execute($sql);
+		while($row = mysql_fetch_assoc($result, MYSQL_BOTH)){
+			$user_name = $row["name"];
+		}
+	
+		return $user_name;
+	}
+	
 	public static function getUri($query){
 		$request_uri = $_SERVER["REQUEST_URI"];
 		$url = strstr($request_uri, "?")?$request_uri:$request_uri."?";

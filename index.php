@@ -1,5 +1,6 @@
 <?php 
 require_once 'class/myutil.class.php';
+
 /*全局变量初始化*/
 $user_id = -1;
 //初始化是否登录标记
@@ -8,7 +9,6 @@ $islogined = false;
 $isManager = false;
 
 session_start();
-
 //自己模拟数据
 // $user_id = 5;
 

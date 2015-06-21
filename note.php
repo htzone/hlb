@@ -8,10 +8,14 @@ $post_id = -1;
 $tieba_id = -1;
 $current_page = 1;
 $pre_page_num = 6;
+$current_user_face_url = "";
+$current_user_name = "";
 //如果session被赋值，则取出user_id的值，并设置已登录
 if(isset($_SESSION["user_id"])){
 	$user_id = $_SESSION["user_id"];
 	$islogined = true;
+	$current_user_face_url = MyUtil::getUserFaceUrl($user_id);
+	$current_user_name = MyUtil::getUserName($user_id);
 }
 if(isset($_GET["post_id"])){
 	$post_id = $_GET["post_id"];
@@ -51,6 +55,10 @@ if(isset($_GET["page"])){
 	var image_url = "";
 	var user_name = "";
 
+	function showdg(){
+		alert("sdasdasdasd");
+	}
+	
 	function addReply(gentie_id,user_id1,image_url1,user_name1){
 		gid = gentie_id;
 		user_id = user_id1;
@@ -77,8 +85,11 @@ if(isset($_GET["page"])){
 	{
 		if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
 		{	
+			var div_element=document.getElementById("replydiv"+gid);
+			div_element.className='replydiv'
+			
 			var para1=document.createElement("p");
-			para1.innerHTML="<a href='friend.php?friend_id="+user_id+"'><img src='image/"+image_url+"'/>"+user_name+"</a>: "+content;
+			para1.innerHTML="<a href='friend.php?friend_id="+user_id+"'><img src='uploads/"+image_url+"'/>"+user_name+"</a>: "+content;
 //	 		var node1=document.createTextNode(document.getElementById("comment_content"+gid).value);
 //	 		para1.appendChild(node1);
 			para1.className='reply_content'
@@ -273,10 +284,10 @@ if(isset($_GET["page"])){
             	$sql = "select user.id,user.name,user.person_image,comment.content,comment.time from comment,user where gentie_id = {$follow_id} and comment.from_id = user.id";
             	$comment_result = $db->execute($sql);
             	if($db->getResultRowsNum()){
-            		echo "<div class='replydiv'>";
+            		echo "<div class='replydiv' id='replydiv$follow_id'>";
             	}
             	else {
-            		echo "<div>";
+            		echo "<div id='replydiv$follow_id'>";
             	}
             	echo "<div id='comment_div$follow_id'>";
             	while($row1 = mysql_fetch_assoc($comment_result, MYSQL_BOTH)){
@@ -294,9 +305,17 @@ if(isset($_GET["page"])){
             	"
             	<div class='reply_div'>		
             	<form>
-            	<textarea rows='3' cols='30' id='content$follow_id'></textarea>
-            	<input type='button' value='回复' '/>
-            	</form>
+            	<textarea rows='3' cols='30' id='comment_content$follow_id'></textarea>";
+            	if($islogined){
+            		echo
+            		"<input type='button' value='回复' onclick=\"addReply($follow_id,$user_id,'$current_user_face_url','$current_user_name')\">";
+            	}
+            	else{
+            		echo "<input type='button' value='回复' onclick=\"addReply($follow_id,$user_id,'$current_user_face_url','$current_user_name')\" disabled='disabled'>
+            		请先<a href='login.php?isnote=1&post_id=$post_id&tieba_id=$tieba_id'>登录</a>再回复";
+            	}
+            	echo
+            	"</form>
             	</div>
             	</div>
             	</div>

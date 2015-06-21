@@ -34,13 +34,6 @@ if (!empty($_POST['login'])){
 	//密码的判断
 		if($user['password']==md5($_POST['password'])){
 	//登录成功的代码
-// 	//在cookie中设置用户ID
-// 		setcookie("uid",$user['id']);
-// 		//在cookie中设置用户名
-// 		setcookie("name",$user['name']);
-// 		//cookie加密
-//         setcookie("shell",md5($user['id'].
-// 		$user['name'].$user['password']."kuso"));
         session_start();
         $_SESSION["user_id"] = $user["id"];
         if($ishome){
