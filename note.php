@@ -183,8 +183,8 @@ if(isset($_GET["page"])){
             	if(MyUtil::checkIsFloorHost($post_id, $follow_user_id)){
             		echo "<span id='lzflag'>楼主</span>";
             	}
-            	echo "
-            	<a href='friend.php'>
+            	echo       
+            	"<a href='friend.php'>
             	<img src='uploads/{$person_image}'/>
             	<p>{$user_name}</p>
             	</a>
@@ -193,13 +193,26 @@ if(isset($_GET["page"])){
             	<div class='right'>
             	<p id='num'>{$floor}楼</p>
             	<p id='ctt'>{$content}</p>
-            	<p id='ctt'><img src='images/timg.jpg'/><img src='images/timg.jpg'/></p>
-            	<p id='info'>{$create_time}  <span id='' class='return'>回复</span></p>
-            	<div class='reply_div'>
+            	<p id='ctt'></p>
+            	<p id='info'>{$create_time} <span id='' class='return'>回复</span></p>";
+//             	$sql = "select user.name,user.person_image,comment.content,comment.time from comment,user where gentie_id = {$follow_id} and comment.from_id = user.id";
+//             	$result = $db->execute($sql);
+//             	while($row = mysql_fetch_assoc($result, MYSQL_BOTH)){
+//             		$comment_user_name = $row["name"];
+//              		$coment_user_person_image[]
+//             	}
+            	echo 
+            	"<div class='replydiv'>
+            	<p class='reply_content'><a href=''><img src='uploads/{$person_image}'/>hetao</a>:fdasfkasdfkljsdafkljsdlf</p>
+            	<p class='reply_time'>2012-08-09 14:21:11</p>
+            	<p class='reply_content'><a href=''><img src='uploads/{$person_image}'/>hetao</a>: fdasfkasdfkljsdafkljsdlf</p>
+            	<p class='reply_time'>2012-08-09 14:21:11</p>
+            	<div class='reply_div'>		
             	<form method='' action=''>
             	<textarea rows='3' cols='30'></textarea>
             	<input type='button' value='回复'/>
             	</form>
+            	</div>
             	</div>
             	</div>
             	</div>";

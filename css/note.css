@@ -182,6 +182,45 @@
 	clear:both;
 }
 
+.comment_list .right .replydiv{
+	
+	float:left;
+	padding:3px;
+	background:#F7F8FA;
+	border:1px solid #B4CDE6;
+	border-radius:5px;
+	width:100%;
+	margin:0 5px;
+}
+
+
+.comment_list .right .replydiv .reply_content{
+	float:left;
+	width:100%;
+	margin:2px;
+}
+
+.comment_list .right .replydiv .reply_content a{
+	text-decoration:none;
+	color:#2D64B3;
+	cursor:pointer;
+}
+
+.comment_list .right .replydiv .reply_content img{
+	height:30px;
+	width:30px;
+	border-radius:2px;
+	border:1px solid #CCC;
+	vertical-align:middle;
+	margin-right:5px;
+}
+.comment_list .right .replydiv .reply_time{
+	margin:2px;
+	float:right;
+	color:#9999B2;
+	clear:both;
+}
+
 .return{
 }
 
