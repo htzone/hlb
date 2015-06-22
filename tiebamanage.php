@@ -41,16 +41,12 @@ $db = DbOperator::getInstance ();
 		<!--header 开始-->
 		<div id="header">
 			<div id="logo">
-				<img src="images/logo.png" />
+				<a href="index.php"><img src="images/logo.png" /></a>
 			</div>
 			<div id="nav"></div>
-			<div id="search">
-				<form action="" method="post">
-					<input id="search_text" type="text" placeholder="Search.." required />
-					<input id="search_button" type="button" value="进入贴吧" /> <a
-						id="create_button" href="tieba_create.php">创建贴吧</a>
-				</form>
-			</div>
+			<?php 
+            Search::search_creat_postbar();
+            ?>
 		</div>
 		<!--header 结束-->
 

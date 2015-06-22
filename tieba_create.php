@@ -126,7 +126,7 @@ if(isset($_SESSION['user_id'])){
 <!-- top_menu 结束 -->
 
 <div id="register_div">
-<div id="logo"><img src="images/logo.png" /></div>
+<div id="logo"><a href="index.php"><img src="images/logo.png"/></a></div>
 <form action="class/tieba_modify.class.php?tag=0&bazu_id=<?php echo $user_id?>" method="post"
 	enctype="multipart/form-data">
 <table>

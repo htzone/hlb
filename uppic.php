@@ -12,7 +12,7 @@ $uploadFlag = $fileUpload->upload('mypic');//上传成功与否
 $fikename="";
 if($uploadFlag){
 	$logoname = $fileUpload->getFileName();//获取该过的图片名称
-	$sql = "update postbar set logo_url='".$logoname."'";
+	$sql = "update postbar set logo_url='".$logoname."' where id = {$tieba_id}";
 	$result = $db->execute($sql);
 	if($result>0)
 	{

@@ -11,10 +11,15 @@ $post_id = -1;
 $gentie_id = -1;
 $operate_code = -1;
 $follow_id = -1;
-
+$friend_id = -1;
 
 if(isset($_POST["action"])){
 	$action = $_POST["action"];
+}
+
+
+if(isset($_GET["friend_id"])){
+	$friend_id = $_GET["friend_id"];
 }
 
 if(isset($_GET["follow_id"])){
@@ -188,6 +193,13 @@ switch ($action){
 			if($db->execute($sql)){
 				echo "success";
 			}
+		}
+		break;
+	case 8:
+		$db = MyUtil::getDB();
+		$sql = "insert into friend(user_id, friend_id) values($user_id, $friend_id)";
+		if ($db->execute($sql)) {
+			echo "success";
 		}
 		break;
  	default:

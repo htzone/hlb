@@ -23,6 +23,7 @@ if (!empty($_POST['reg'])){
 	exit("<script>alert('用户名已经存在!请重新注册!');
 				location.href='register.php'</script>");
 	}
+	
 	$fileName = "default.png";
 	$up = new FileUpload();
 	if($up->upload('person_image')){
@@ -33,14 +34,10 @@ if (!empty($_POST['reg'])){
 // 		echo "<p>{$error}</p>";
 	}
 	
-	if(isset($_POST['person_image'])){
-		$sql = "insert into user set name='{$_POST['name']}',person_image='{$_POST['person_image']}',
-	password='".md5($_POST['password'])."',email='{$_POST['email']}',person_info='{$_POST['content']}'";
-	}
-	else{
+
 		$sql = "insert into user set name='{$_POST['name']}',person_image='{$fileName}',
 		password='".md5($_POST['password'])."',email='{$_POST['email']}',person_info='{$_POST['content']}'";
-	}
+	
 // 	$sql = "insert into user set name='{$_POST['name']}',person_image='{$_POST['person_image']}',
 // 	password='".md5($_POST['password'])."',email='{$_POST['email']}',person_info='{$_POST['content']}'";
 	$result = mysql_query($sql);
@@ -89,7 +86,7 @@ if (!empty($_POST['reg'])){
         
     	<div id="register_div">
         	<div id="logo">
-            	<img src="images/logo.png"/>
+            	<a href="index.php"><img src="images/logo.png"/></a>
             </div>
         	<form action="" method="post" enctype="multipart/form-data">
             	<table>

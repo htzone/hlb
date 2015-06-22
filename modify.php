@@ -30,7 +30,7 @@
         
     	<div id="register_div">
         	<div id="logo">
-            	<img src="images/logo.png"/>
+            	<a href="index.php"><img src="images/logo.png"/></a>
             </div>
         	<form>
             	<table>

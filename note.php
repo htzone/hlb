@@ -309,13 +309,15 @@ $(document).ready(function(){
             <?php 
             
             echo 
-            "<form id='header_operation'>";   
-           	if(MyUtil::isCollected($user_id, $post_id)){
-           		echo "<input id='collect_button' class='btn_background' type='button' value='已收藏' disabled='disabled' onclick=\"collect($post_id)\"/>";
-           	}  
-           	else{
-           		echo "<input id='collect_button' class='btn_background' type='button' value='收藏' onclick=\"collect($post_id)\"/>";
-           	}
+            "<form id='header_operation'>";
+            if($islogined){
+            	if(MyUtil::isCollected($user_id, $post_id)){
+            		echo "<input id='collect_button' class='btn_background' type='button' value='已收藏' disabled='disabled' onclick=\"collect($post_id)\"/>";
+            	}
+            	else{
+            		echo "<input id='collect_button' class='btn_background' type='button' value='收藏' onclick=\"collect($post_id)\"/>";
+            		}
+            }   
             echo 
             " <a class='btn_background' href='#textarea'>回复</a>
             </form>

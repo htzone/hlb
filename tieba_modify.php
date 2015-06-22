@@ -145,7 +145,7 @@ MyUtil::showTopMenu($islogined);
 <!-- top_menu 结束 -->
 
 <div id="register_div">
-<div id="logo"><img src="images/logo.png" /></div>
+<div id="logo"><a href="index.php"><img src="images/logo.png"/></a></div>
 
 <table border='0' width="100%">
 

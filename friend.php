@@ -32,6 +32,7 @@ if(isset($_SESSION["user_id"])){
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <link href="css/global.css" rel='stylesheet' type='text/css' />
 <link href="css/friend.css" rel='stylesheet' type='text/css' />
+<script src="javascript/jquery.js"></script>
 <title>好友管理</title>
 </head>
 
@@ -68,9 +69,29 @@ if(isset($_SESSION["user_id"])){
 								<img src='uploads/{$person_image}' alt='赶快上传你的头像吧~'/>
 							</div>
 							<div id='info_div'>
-								<span>{$friend_name}</span>
-								<form methon='post' action=''>
-									<input type='button' value='加好友'/>
+								<span>&nbsp;&nbsp;{$friend_name}</span>
+								<form methon='post' action=''>";
+				$cnt = 0;
+				if ($islogined) {
+					$sql = "select * from friend where user_id=$user_id and friend_id=$friend_id";
+					$db->execute($sql);					
+					$cnt = $db->getResultRowsNum();
+				}
+				
+				if ($cnt > 0) {
+					echo"
+									<input id='add' type='button' value='已加好友' disabled='disabled'/>";
+				} else {
+					if ($islogined) {
+						echo"
+									<input id='add' type='button' value='+ 好友' onclick='add_friend($friend_id)'/>";
+					} else {
+						echo"
+									<input id='add' type='button' value='+ 好友' disabled='disabled' />";
+					}
+					
+				}				
+				echo"
 								<form>
 							</div>
 						</div>
@@ -100,5 +121,61 @@ if(isset($_SESSION["user_id"])){
         	}
         ?>
 	</div>
+<script type="text/javascript">
+// document.getElementById('add').onclick=function(){
+// 	var a = document.getElementById('add');
+// 	a.disabled='disabled';
+// 	a.value='已加关注';
+// }
+function add_friend(friend_id) {
+	xmlHttp=GetXmlHttpObject();
+	if (xmlHttp == null) {
+		alert("添加好友失败！");
+		return;
+	}
+	var url="sendposthandle.php";
+	url=url+"?friend_id="+friend_id+"&action="+8;
+	xmlHttp.onreadystatechange=stateChanged;
+	xmlHttp.open("GET",url,true);
+	xmlHttp.send(null);
+}
+
+function stateChanged()
+{
+	if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
+	{
+	 	var a = document.getElementById('add');
+	 	if(xmlHttp.responseText == "success"){
+	 	 	a.disabled='disabled';
+	 	 	a.value='已加关注';
+		}
+	 	else {
+			alert(xmlHttp.responseText+"添加好友失败！");
+		}
+	}
+}
+function GetXmlHttpObject()
+{
+	var xmlHttp=null;
+	try
+	{
+		// Firefox, Opera 8.0+, Safari
+		xmlHttp=new XMLHttpRequest();
+	}
+	catch (e)
+	{
+		//Internet Explorer
+		try
+		{
+			xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+		}
+		catch (e)
+		{
+			xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+	}
+	return xmlHttp;
+}
+</script>
 </body>
 </html>
