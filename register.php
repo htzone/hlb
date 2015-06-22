@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <?php 
 header("content-type:text/html;charset=utf-8");
+require_once 'class/myutil.class.php';
 include "class/mysql.class.php";
 if (!empty($_POST['reg'])){
 	//用户名来进行判断
@@ -22,13 +23,22 @@ if (!empty($_POST['reg'])){
 	exit("<script>alert('用户名已经存在!请重新注册!');
 				location.href='register.php'</script>");
 	}
-
+	$fileName = "default.png";
+	$up = new FileUpload();
+	if($up->upload('person_image')){
+		$fileName = $up->getFileName();
+	}
+	else {
+// 		$error = $up->getErrorMsg();
+// 		echo "<p>{$error}</p>";
+	}
+	
 	if(isset($_POST['person_image'])){
 		$sql = "insert into user set name='{$_POST['name']}',person_image='{$_POST['person_image']}',
 	password='".md5($_POST['password'])."',email='{$_POST['email']}',person_info='{$_POST['content']}'";
 	}
 	else{
-		$sql = "insert into user set name='{$_POST['name']}',
+		$sql = "insert into user set name='{$_POST['name']}',person_image='{$fileName}',
 		password='".md5($_POST['password'])."',email='{$_POST['email']}',person_info='{$_POST['content']}'";
 	}
 // 	$sql = "insert into user set name='{$_POST['name']}',person_image='{$_POST['person_image']}',
@@ -81,7 +91,7 @@ if (!empty($_POST['reg'])){
         	<div id="logo">
             	<img src="images/logo.png"/>
             </div>
-        	<form action="" method="post" >
+        	<form action="" method="post" enctype="multipart/form-data">
             	<table>
                 	<tr>
                 		<td class="left">头像：</td>

@@ -5,6 +5,21 @@ function __autoload($className){
 
 class MyUtil{
 	
+	public static function isCollected($user_id, $post_id){
+		$sql = "select tiezi_id from collection where user_id = {$user_id}";
+		$collecttion_result = DbOperator::getInstance()->execute($sql);
+		$collection_array = array();
+		while($row = mysql_fetch_assoc($collecttion_result, MYSQL_BOTH)){
+			$collection_array[] = $row["tiezi_id"];
+		}
+		if(in_array($post_id, $collection_array)){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
 	public static function  getUserFaceUrl($user_id){
 		$sql = "select person_image from user where id = {$user_id}";
 		$result = DbOperator::getInstance()->execute($sql);

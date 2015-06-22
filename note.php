@@ -28,6 +28,16 @@ if(isset($_GET["tieba_id"])){
 if(isset($_GET["page"])){
 	$current_page = $_GET["page"];
 }
+
+//如果登录了，检查用户是否具有管理权限
+if($islogined){
+	//检查用户对该贴吧是否具有管理权限
+	if(MyUtil::checkUserAuthority($user_id, $tieba_id)){
+		//具有管理权限
+		$isManager = true;
+	}
+
+}
 // $post_id =1;
 // $tieba_id =1;
 // $user_id = 5;
@@ -50,7 +60,45 @@ $(document).ready(function(){
 		
 	  });
 	}); 
+
+	function collect(post_id){
+		xmlHttp=GetXmlHttpObject()
+		if (xmlHttp==null)
+		{
+			alert ("操作失败！");
+			return
+		}
+		var url="sendposthandle.php"
+		url=url+"?post_id="+post_id
+		url=url+"&action="+7
+		xmlHttp.onreadystatechange=stateChanged4
+		xmlHttp.open("GET",url,true)
+		xmlHttp.send(null)
+	}
 	
+	g_follow_id = -1;
+	function tiezi_operate(follow_id){
+		if(confirm("你确定要删除这条帖子吗？")){
+		}
+		else{
+			return;
+		}
+		g_follow_id = follow_id;
+		xmlHttp=GetXmlHttpObject()
+		if (xmlHttp==null)
+		{
+			alert ("操作失败！");
+			return
+		}
+		var url="sendposthandle.php"
+		url=url+"?follow_id="+follow_id
+		url=url+"&action="+6
+		xmlHttp.onreadystatechange=stateChanged3
+		xmlHttp.open("GET",url,true)
+		xmlHttp.send(null)
+		
+	}
+
 	function care(tieba_id){
 		xmlHttp=GetXmlHttpObject()
 		if (xmlHttp==null)
@@ -115,7 +163,7 @@ $(document).ready(function(){
 			element.appendChild(para1);
 			element.appendChild(para2);
 
-			alert ("回复成功！");
+// 			alert ("回复成功！");
 			document.getElementById("comment_content"+gid).value="";
 		}
 	}
@@ -135,6 +183,34 @@ $(document).ready(function(){
 		}
 	}
 
+	function stateChanged3()
+	{
+		if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
+		{	
+			var list_div = document.getElementById("comment_list"+g_follow_id);
+			if(xmlHttp.responseText == "success"){
+				list_div.style.display = "none";
+			}
+			else{
+				alert("操作失败");
+			}
+		}
+	}
+
+	function stateChanged4()
+	{
+		if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
+		{	
+			var collect_button = document.getElementById("collect_button");
+			if(xmlHttp.responseText == "success"){
+				collect_button.value = "已收藏"
+			}
+			else{
+				alert("操作失败");
+			}
+		}
+	}
+	
 	function GetXmlHttpObject()
 	{
 		var xmlHttp=null;
@@ -228,13 +304,22 @@ $(document).ready(function(){
         <!--content 开始-->
         <div id="content">
         
-        	<form id="header_operation" method="post" action="">
-            	<input class="btn_background" type="button" value="只看楼主"/>
-            	<input class="btn_background" type="button" value="收藏"/>
-                <a class="btn_background" href="#textarea">回复</a>
-            </form>
+        	
             <!--帖子开始-->
             <?php 
+            
+            echo 
+            "<form id='header_operation'>";   
+           	if(MyUtil::isCollected($user_id, $post_id)){
+           		echo "<input id='collect_button' class='btn_background' type='button' value='已收藏' disabled='disabled' onclick=\"collect($post_id)\"/>";
+           	}  
+           	else{
+           		echo "<input id='collect_button' class='btn_background' type='button' value='收藏' onclick=\"collect($post_id)\"/>";
+           	}
+            echo 
+            " <a class='btn_background' href='#textarea'>回复</a>
+            </form>
+            ";
             //------跟帖列表显示处理--------
             $floor = 0;
             $db = MyUtil::getDB();
@@ -293,7 +378,7 @@ $(document).ready(function(){
             	$image_url = $row["image_url"];
             	$floor++;
             	echo "
-            	<div class='comment_list'>
+            	<div id='comment_list$follow_id' class='comment_list'>
             	<div class='left'>";
             	if(MyUtil::checkIsFloorHost($post_id, $follow_user_id)){
             		echo "<span id='lzflag'>楼主</span>";
@@ -309,7 +394,11 @@ $(document).ready(function(){
             	<p id='num'>{$floor}楼</p>
             	<p id='ctt'>{$content}</p>
             	<p id='ctt'></p>
-            	<p id='info'>{$create_time} <span id='' class='return'>回复</span></p>";
+            	<p id='info'>{$create_time} <span id='' class='return'>回复</span>";
+            	if($isManager){
+            		echo "<input type='button' value='删除' onclick=\"tiezi_operate($follow_id)\"/>";
+            	}
+            	echo "</p>";
             	$sql = "select user.id,user.name,user.person_image,comment.content,comment.time from comment,user where gentie_id = {$follow_id} and comment.from_id = user.id";
             	$comment_result = $db->execute($sql);
             	if($db->getResultRowsNum()){

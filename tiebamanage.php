@@ -95,7 +95,7 @@ $result = $db->execute($sql2);
 while($row = mysql_fetch_array($result))
 {
 	echo "<div class='tieba_name'>
-					<a href='home_bawu.php?tieba_id=".trim($row['id'])."'>".trim($row['name'])."</a>
+					<a href='home.php?tieba_id=".trim($row['id'])."'>".trim($row['name'])."</a>
 				</div>";
 }
 

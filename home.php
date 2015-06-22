@@ -54,8 +54,14 @@ if($islogined){
 <script type="text/javascript"> 
 
 g_post_id = -1;
-
 function tiezi_operate(post_id, operate_code){
+	if(operate_code == 3){
+		if(confirm("你确定要删除这条帖子吗？")){
+		}
+		else{
+			return;
+		}
+	}
 	g_post_id = post_id;
 	xmlHttp=GetXmlHttpObject()
 	if (xmlHttp==null)
@@ -70,6 +76,7 @@ function tiezi_operate(post_id, operate_code){
 	xmlHttp.onreadystatechange=stateChanged2
 	xmlHttp.open("GET",url,true)
 	xmlHttp.send(null)
+	
 }
 
 function care(tieba_id){
@@ -106,12 +113,29 @@ function stateChanged2()
 {
 	if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
 	{	
-		if(xmlHttp.responseText == "success"){
-			var left_div = document.getElementById("left"+g_post_id);
-			var span = document.createElement("span");
+		var left_div = document.getElementById("left"+g_post_id);
+		var list_div = document.getElementById("note_list"+g_post_id);
+		var span1 = document.createElement("span");
+		span1.innerHTML = "顶";
+		var span2 = document.createElement("span");
+		span2.innerHTML = "精";
+		if(xmlHttp.responseText == "code1_1"){
+			left_div.appendChild(span1);
+		}
+		else if(xmlHttp.responseText == "code1_2"){
+			left_div.removeChild(left_div.childNodes[left_div.childNodes.length-1]);
+		}
+		else if(xmlHttp.responseText == "code2_1"){
+			left_div.appendChild(span2);
+		}
+		else if(xmlHttp.responseText == "code2_2"){
+			left_div.removeChild(left_div.childNodes[left_div.childNodes.length-1]);
+		}
+		else if(xmlHttp.responseText == "code3"){
+			list_div.style.display = "none";
 		}
 		else{
-			alert("关注失败");
+			alert("操作失败");
 		}
 	}
 }

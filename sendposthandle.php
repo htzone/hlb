@@ -9,11 +9,24 @@ $user_id=-1;
 $tieba_id=-1;
 $post_id = -1;
 $gentie_id = -1;
-
+$operate_code = -1;
+$follow_id = -1;
 
 
 if(isset($_POST["action"])){
 	$action = $_POST["action"];
+}
+
+if(isset($_GET["follow_id"])){
+	$follow_id = $_GET["follow_id"];
+}
+
+if(isset($_GET["operate_code"])){
+	$operate_code = $_GET["operate_code"];
+}
+
+if(isset($_GET["post_id"])){
+	$post_id = $_GET["post_id"];
 }
 
 if(isset($_GET["tieba_id"])){
@@ -108,8 +121,75 @@ switch ($action){
 			if($db->execute($sql)){
 				echo "success";
 			}	
+		};
+		break;
+	case 5:
+		if($operate_code == 1){
+			$db = MyUtil::getDB();
+			$sql = "select state from post where id = {$post_id}";
+			$result = $db->execute($sql);
+			$post_state = 0;
+	        while($row = mysql_fetch_assoc($result, MYSQL_BOTH)){
+	        	$post_state = $row["state"]; 
+	        }
+	        if($post_state){
+	        	$sql="update post set state = 0 where id = {$post_id}";
+	        	if($db->execute($sql)){
+	        		echo "code1_2";
+	        	}
+	        }
+	        else{
+	        	$sql="update post set state = 1 where id = {$post_id}";
+	        	if($db->execute($sql)){
+	        		echo "code1_1";
+	        	}
+	        }
 		}
-		
+		else if($operate_code == 2){
+			$db = MyUtil::getDB();
+			$sql = "select isFine from post where id = {$post_id}";
+			$result = $db->execute($sql);
+			$post_isFine = 0;
+			while($row = mysql_fetch_assoc($result, MYSQL_BOTH)){
+				$post_isFine = $row["isFine"];
+			}
+			if($post_isFine){
+				$sql = "update post set isFine = 0 where id = {$post_id}";
+				if($db->execute($sql)){
+					echo "code2_2";
+				}
+			}
+			else{
+				$sql = "update post set isFine = 2 where id = {$post_id}";
+				if($db->execute($sql)){
+					echo "code2_1";
+				}
+			}
+		}
+		else if($operate_code == 3){
+			$db = MyUtil::getDB();
+			$sql = "delete from post where id = {$post_id}";
+			if($db->execute($sql)){
+				echo "code3";
+			}
+		}
+		break;
+	case 6:
+		$db = MyUtil::getDB();
+		$sql = "delete from follow where id = {$follow_id}";
+		if($db->execute($sql)){
+			echo "success";
+		}
+		break;
+	case 7:
+		$db = MyUtil::getDB();
+		if($user_id){
+			$sql = "insert into collection(user_id,tiezi_id) values({$user_id}, {$post_id})";
+			if($db->execute($sql)){
+				echo "success";
+			}
+		}
+		break;
  	default:
  		break;
 }
