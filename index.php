@@ -62,78 +62,64 @@ if(isset($_SESSION["user_id"])){
         <!-- content 开始 -->
         <div id="content">
         	
-            <h1>猜你喜欢</h1>
+            
         	<!--以下是贴吧的图标-->
-            <div class="tieba_icon">
-            		<a href="home.php">
-                        <img src="images/timg.jpg" alt="" />
-                        <p>滑板吧</p>	
-                    </a>
-            </div>
-            <div class="tieba_icon">
-            		<a href="home.php">
-                        <img src="images/timg.jpg" alt="" />
-                        <p>滑板吧</p>	
-                    </a>
-            </div>
-            <div class="tieba_icon">
-            		<a href="home.php">
-                        <img src="images/timg.jpg" alt="" />
-                        <p>滑板吧</p>	
-                    </a>
-            </div>
-            <div class="tieba_icon">
-            		<a href="home.php">
-                        <img src="images/timg.jpg" alt="" />
-                        <p>滑板吧</p>	
-                    </a>
-            </div>
-            <div class="tieba_icon">
-            		<a href="home.php">
-                        <img src="images/timg.jpg" alt="" />
-                        <p>滑板吧</p>	
-                    </a>
-            </div>
-            <div class="tieba_icon">
-            		<a href="home.php">
-                        <img src="images/timg.jpg" alt="" />
-                        <p>滑板吧</p>	
-                    </a>
-            </div>
-            <div class="tieba_icon">
-            		<a href="home.php">
-                        <img src="images/timg.jpg" alt="" />
-                        <p>滑板吧</p>	
-                    </a>
-            </div>
-            <div class="tieba_icon">
-            		<a href="home.php">
-                        <img src="images/timg.jpg" alt="" />
-                        <p>滑板吧</p>	
-                    </a>
-            </div>
-            <div class="tieba_icon">
-            		<a href="home.php">
-                        <img src="images/timg.jpg" alt="" />
-                        <p>滑板吧</p>	
-                    </a>
-            </div>
-            <div class="tieba_icon">
-            		<a href="home.php">
-                        <img src="images/timg.jpg" alt="" />
-                        <p>滑板吧</p>	
-                    </a>
-            </div>
-            
-            <div class="nav">
-            </div>
-            
-            <div id="dontlike">
-            <form method="post" action="">
-            	<input type="submit" value="不喜欢？换一批" />
-            </form>
-            </div> 
-            
+        	<?php 
+        		$db = MyUtil::getDB();
+        		$sql = "select id, name, logo_url from postbar order by people_num desc, tiezi_num desc limit 50";
+        		$count_result = $db->execute($sql);
+        		$cnt = 0;
+        		$cnt = $db->getResultRowsNum();        		
+        		if ($cnt < 1) {
+        			echo "<h1 align='center'>还没有贴吧被创建，去创建属于你的贴吧~</h1>";
+        		}
+        		else {
+        			echo "<h1>猜你喜欢</h1>";
+        			if ($cnt <= 10) {
+        				while ($row = mysql_fetch_assoc($count_result, MYSQL_BOTH)) {
+        					$id = $row["id"];
+        					$name = $row["name"];
+        					$logo = $row["logo_url"];
+        					echo "
+								<div name='reco' class='tieba_icon' style='display:inline'>
+									<a href='home.php?tieba_id=$id'>
+        								<img src = 'uploads/$logo' alt=''>
+        								<p>$name</p
+        							</a>
+        						</div>";
+        				}
+        			}
+        			else {
+        				$i = 0;
+        				while ($row = mysql_fetch_assoc($count_result, MYSQL_BOTH)) {
+        					$i++;
+        					$id = $row["id"];
+        					$name = $row["name"];
+        					$logo = $row["logo_url"];
+        					if ($i <= 10) {
+        						echo "<div name='reco' class='tieba_icon' style='display:inline'>";
+        					} else {
+        						echo "<div name='reco' class='tieba_icon' style='display:none'>";
+        					}
+        					echo "        					
+        							<a href='home.php?tieba_id=$id'>
+        								<img src = 'uploads/$logo' alt=''>
+        								<p>$name</p>
+        							</a>
+        						</div>";
+        						
+        				}
+        				echo "
+        					<div class='nav'>
+        						</div>
+        					
+        						<div id='dontlike'>
+        						<button id='button'>不喜欢？换一批</button>
+        					</div>";
+        			}
+        			
+        		}
+        	?>            
         </div>
         <!-- content 结束 -->
         
@@ -144,7 +130,28 @@ if(isset($_SESSION["user_id"])){
         <!-- footer 结束 -->
         
 	</div>
-    
+<script type="text/javascript">
+var i = 10;
+document.getElementById('button').onclick=function() {
+	var a = document.getElementsByName('reco'), len = a.length;
+	for (var j = 0; j < len; j++) {
+		a[j].style.display='none';
+	}
+	if (i+10 > len) {
+		var k = len-10;
+		for ( ; k < len; k++) {
+			a[k].style.display='inline';
+		}
+		i = 0;
+	} else {
+		for (var j = 0; j < 10; j++) {
+			a[i].style.display='inline';
+			i = (i+1)%len;
+		}
+	}
+	
+}
+</script> 
 </body>
 </html>
 

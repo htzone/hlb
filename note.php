@@ -4,6 +4,8 @@ session_start();
 //初始化全局变量
 $user_id = -1;
 $islogined = false;
+//是否具有管理权限
+$isManager = false;
 $post_id = -1;
 $tieba_id = -1;
 $current_page = 1;
@@ -42,12 +44,27 @@ if(isset($_GET["page"])){
 <link href="css/note.css" rel='stylesheet' type='text/css' />
 <script src="javascript/jquery.js"></script>
 <script type="text/javascript">
-	$(document).ready(function(){
+$(document).ready(function(){
 	$(".return").click(function(){
 		$(this).parents(".right").find(".reply_div").slideToggle("slow");
 		
 	  });
 	}); 
+	
+	function care(tieba_id){
+		xmlHttp=GetXmlHttpObject()
+		if (xmlHttp==null)
+		{
+			alert ("关注失败！");
+			return
+		}
+		var url="sendposthandle.php"
+		url=url+"?tieba_id="+tieba_id
+		url=url+"&action="+4
+		xmlHttp.onreadystatechange=stateChanged2
+		xmlHttp.open("GET",url,true)
+		xmlHttp.send(null)
+	}
 
 	var gid = -1;
 	var content = "";
@@ -55,10 +72,6 @@ if(isset($_GET["page"])){
 	var image_url = "";
 	var user_name = "";
 
-	function showdg(){
-		alert("sdasdasdasd");
-	}
-	
 	function addReply(gentie_id,user_id1,image_url1,user_name1){
 		gid = gentie_id;
 		user_id = user_id1;
@@ -76,12 +89,12 @@ if(isset($_GET["page"])){
 		url=url+"?content="+content
 		url=url+"&action="+3
 		url=url+"&gentie_id="+gid
-		xmlHttp.onreadystatechange=stateChanged
+		xmlHttp.onreadystatechange=stateChanged1
 		xmlHttp.open("GET",url,true)
 		xmlHttp.send(null)
 	}
 
-	function stateChanged()
+	function stateChanged1()
 	{
 		if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
 		{	
@@ -104,6 +117,21 @@ if(isset($_GET["page"])){
 
 			alert ("回复成功！");
 			document.getElementById("comment_content"+gid).value="";
+		}
+	}
+
+	function stateChanged2()
+	{
+		if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
+		{	
+			var care_button=document.getElementById("care_button");
+			if(xmlHttp.responseText == "success"){
+				care_button.value = "已关注";
+				care_button.disabled = true;
+			}
+			else{
+				alert("关注失败");
+			}
 		}
 	}
 
@@ -168,22 +196,23 @@ if(isset($_GET["page"])){
             </div>
             ";
         
-        if(MyUtil::checkUserIsCareOfTieba($user_id, $tieba_id)){
-        	echo "
+        if($islogined){
+        	if(MyUtil::checkUserIsCareOfTieba($user_id, $tieba_id)){
+        		echo "
 				<div id='focus'>
             	<form method='post' action=''>
                 	<input type='button' value='已关注' disabled='disabled'/>
                 </form>
             	</div>";
-        }
-        else{
-        	echo "<div id='focus'>
+        	}
+        	else{
+        		echo "<div id='focus'>
             	<form method='post' action=''>
-                	<input type='button' value='+关注' />
+                	<input id='care_button' type='button' value='+关注' onclick=\"care($tieba_id)\"/>
                 </form>
             </div>";
-        }
-            
+        	}
+        }    
         echo" 
             <div id='tieba_info'>
             	<span>{$tieba_name}</span>

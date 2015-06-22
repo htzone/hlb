@@ -51,7 +51,93 @@ if($islogined){
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <link href="css/global.css" rel='stylesheet' type='text/css' />
 <link href="css/home.css" rel='stylesheet' type='text/css' />
-<script type="text/javascript">    
+<script type="text/javascript"> 
+
+g_post_id = -1;
+
+function tiezi_operate(post_id, operate_code){
+	g_post_id = post_id;
+	xmlHttp=GetXmlHttpObject()
+	if (xmlHttp==null)
+	{
+		alert ("操作失败！");
+		return
+	}
+	var url="sendposthandle.php"
+	url=url+"?post_id="+post_id
+	url=url+"&action="+5
+	url=url+"&operate_code="+operate_code
+	xmlHttp.onreadystatechange=stateChanged2
+	xmlHttp.open("GET",url,true)
+	xmlHttp.send(null)
+}
+
+function care(tieba_id){
+	xmlHttp=GetXmlHttpObject()
+	if (xmlHttp==null)
+	{
+		alert ("关注失败！");
+		return
+	}
+	var url="sendposthandle.php"
+	url=url+"?tieba_id="+tieba_id
+	url=url+"&action="+4
+	xmlHttp.onreadystatechange=stateChanged1
+	xmlHttp.open("GET",url,true)
+	xmlHttp.send(null)
+}
+
+function stateChanged1()
+{
+	if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
+	{	
+		var care_button=document.getElementById("care_button");
+		if(xmlHttp.responseText == "success"){
+			care_button.value = "已关注";
+			care_button.disabled = true;
+		}
+		else{
+			alert("关注失败");
+		}
+	}
+}
+
+function stateChanged2()
+{
+	if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
+	{	
+		if(xmlHttp.responseText == "success"){
+			var left_div = document.getElementById("left"+g_post_id);
+			var span = document.createElement("span");
+		}
+		else{
+			alert("关注失败");
+		}
+	}
+}
+
+function GetXmlHttpObject()
+{
+	var xmlHttp=null;
+	try
+	{
+		// Firefox, Opera 8.0+, Safari
+		xmlHttp=new XMLHttpRequest();
+	}
+	catch (e)
+	{
+		//Internet Explorer
+		try
+		{
+			xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+		}
+		catch (e)
+		{
+			xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+	}
+	return xmlHttp;
+}
 </script>    
 </head>
 
@@ -105,13 +191,15 @@ if($islogined){
                 	<a href='home.php?tieba_id=$tieba_id'><img src='uploads/{$logo_url}' /></a>
                 	</div>
                 	<div id='tieba_title'>
-	                {$tieba_name}";         
-	                if(MyUtil::checkUserIsCareOfTieba($user_id, $tieba_id)){
-	                	echo "<input type='submit' value='已关注' disabled='disabled'/>";
-	                }
-	                else{
-	                	echo "<input type='submit' value='+关注' />";
-	                }
+	                {$tieba_name}";  
+	                if($islogined){
+	                	if(MyUtil::checkUserIsCareOfTieba($user_id, $tieba_id)){
+	                		echo "<input type='submit' value='已关注' disabled='disabled'/>";
+	                	}
+	                	else{
+	                		echo "<input id='care_button' type='button' value='+关注' onclick=\"care($tieba_id)\"/>";
+	                	}
+	                }       
                     echo "
                     <span id='focus'>
                    	 关注：{$people_num}人 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -148,8 +236,8 @@ if($islogined){
         	
         	$follow_num = MyUtil::getFollowNumFromTiezi($post_id);
         	echo "
-				<div class='note_list'>
-            	<div class='left'>";
+				<div id='note_list$post_id' class='note_list'>
+            	<div id='left$post_id' class='left'><span>{$follow_num}</span>";
         	if($state){
         		echo "<span>顶</span>";
         	}
@@ -157,12 +245,20 @@ if($islogined){
         	if($isFine){
         		echo "<span>精</span>";
         	}     
-            echo "
-				<span>{$follow_num}</span>      
-                </div>
+            echo 
+            	"</div>
                 <div class='right'>
-                <a href='note.php?post_id=$post_id&tieba_id=$tieba_id'>{$row["tiezi_name"]}</a>
-                <p>{$row["tiezi_content"]}</p>";
+                <a href='note.php?post_id=$post_id&tieba_id=$tieba_id'>{$row["tiezi_name"]}</a>";
+	            if($isManager){
+	            	echo 
+	            		"<span>
+	                	<input type='button' value='置顶' onclick=\"tiezi_operate($post_id,1)\"/>
+	                    <input type='button' value='加精' onclick=\"tiezi_operate($post_id,2)\"/>
+	                    <input type='button' value='删除' onclick=\"tiezi_operate($post_id,3)\"/>
+	                	</span>";
+	            }
+                echo
+                "<p>{$row["tiezi_content"]}</p>";
             
             if($image_url){
             	echo "<p><img src='uploads/$image_url'/>

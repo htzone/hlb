@@ -10,8 +10,14 @@ $tieba_id=-1;
 $post_id = -1;
 $gentie_id = -1;
 
+
+
 if(isset($_POST["action"])){
 	$action = $_POST["action"];
+}
+
+if(isset($_GET["tieba_id"])){
+	$tieba_id = $_GET["tieba_id"];
 }
 
 if(isset($_POST["content"])){
@@ -94,6 +100,16 @@ switch ($action){
 			echo "fuck";
 		}
 		break;
+	case 4:
+		$db = MyUtil::getDB();
+		$sql="insert into care(tieba_id, user_id) values({$tieba_id}, {$user_id})";
+		if($db->execute($sql)){
+			$sql = "update postbar set people_num = people_num+1 where id = {$tieba_id}";
+			if($db->execute($sql)){
+				echo "success";
+			}	
+		}
+		
  	default:
  		break;
 }
