@@ -28,7 +28,7 @@ if (isset ( $_GET ['tieba_id'] )) {
 	$tieba_id = -1;//不能在这个页面执行修改的动作，因为吧务和图片上传都是异步执行的，首先必须存在才行
 }
 ?>
-<script src="http://localhost/hlb/javascript/jquery.js"></script>
+<script src="javascript/jquery.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 	$("#add").click(function(){
@@ -80,7 +80,7 @@ if (isset ( $_GET ['tieba_id'] )) {
 		//alert("处理事件的函数:"+id+"/"+tag+"/"+tieba_id);
 		if(myXmlHttp)
 		{			
-			var url="http://localhost/hlb/class/tiebamanage_control.class.php";
+			var url="class/tiebamanage_control.class.php";
 			var data="";
 			if(tag==0)
 			{

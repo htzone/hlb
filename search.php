@@ -62,8 +62,11 @@ if(isset($_SESSION["user_id"])){
             	<a href="index.php"><img src="images/logo.png"/></a>
             </div>
             
-           <?php 
+           <?php
+           	if ($islogined)
             Search::search_creat_postbar($search_text);
+           	else
+           	Search::search_postbar($search_text);
            ?>
             
         </div>

@@ -15,6 +15,15 @@ $db = MyUtil::getDB();
 $sql = "delete from friend where user_id = {$user_id} and friend_id = {$friend_id}";
 // echo "<script>alert('$sql')</script>";
 if ($db->execute($sql)) {
+	$sql = "select friends_num from user where id = {$user_id}";
+	$count_result = $db->execute($sql);
+	$friends_num = 1;
+	while ($row = mysql_fetch_assoc($count_result, MYSQL_BOTH)) {
+		$friends_num = $row["friends_num"];
+	}
+	$friends_num--;
+	$sql = "update user set friends_num = $friends_num where id = {$user_id}";
+	$db->execute($sql);
 	echo "<script>location.href='friendmanager.php'</script>";
 } else {
 	echo "<script>window.hostory.go(-1);</script>";

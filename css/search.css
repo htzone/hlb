@@ -21,6 +21,22 @@
 }
 
 /*头部布局样式*/
+#head_other{
+	float:right;
+	width:70%;
+	text-align:left;
+}
+
+#head_other #search_text{
+	width:300px;
+	height:30px;
+}
+
+#head_other #search_button{
+	height:35px;
+	cursor:pointer;
+}
+
 #search{
 	float:right;
 	width:70%;

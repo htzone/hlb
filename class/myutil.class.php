@@ -5,6 +5,16 @@ function __autoload($className){
 
 class MyUtil{
 	
+	public static function getTieziNum($user_id){
+		$sql = "select count(id) from post where create_user_id = {$user_id}";
+		$result = DbOperator::getInstance()->execute($sql);
+		$tiezi_num = null;
+		while ($row = mysql_fetch_assoc($result, MYSQL_BOTH)){
+			$tiezi_num = $row[0];
+		}
+		return $tiezi_num;
+	}
+	
 	public static function isCollected($user_id, $post_id){
 		$sql = "select tiezi_id from collection where user_id = {$user_id}";
 		$collecttion_result = DbOperator::getInstance()->execute($sql);

@@ -80,7 +80,10 @@ switch ($action){
 				$now_post_num = MyUtil::getTieziNumFromTieba($tieba_id);
 				$sql = "update postbar set tiezi_num = {$now_post_num} where id = {$tieba_id}";
 				if($db->execute($sql)){
-					echo "<script>location.href='home.php?tieba_id={$tieba_id}';</script>";
+					$sql = "update user set tiezi_num = tiezi_num+1 where id = {$user_id}";
+					if($db->execute($sql)){
+						echo "<script>location.href='home.php?tieba_id={$tieba_id}';</script>";
+					}	
 				}
 			}
 			else{
@@ -96,7 +99,7 @@ switch ($action){
 		if($content){
 			$db = MyUtil::getDB();
 			$sql = "insert into follow(content,create_user,tiezi_id) values('{$content}',{$user_id},{$post_id})";
-			if($db->execute($sql)){
+			if($db->execute($sql)){	
 				echo "<script>location.href='note.php?post_id={$post_id}&tieba_id={$tieba_id}';</script>";
 			}
 			else{
@@ -191,7 +194,10 @@ switch ($action){
 		if($user_id){
 			$sql = "insert into collection(user_id,tiezi_id) values({$user_id}, {$post_id})";
 			if($db->execute($sql)){
-				echo "success";
+				$sql = "update user set collection_num = collection_num+1 where id = {$user_id}";
+				if($db->execute($sql)){
+					echo "success";
+				}	
 			}
 		}
 		break;
@@ -199,9 +205,26 @@ switch ($action){
 		$db = MyUtil::getDB();
 		$sql = "insert into friend(user_id, friend_id) values($user_id, $friend_id)";
 		if ($db->execute($sql)) {
+			$sql = "select friends_num from user where id = {$user_id}";
+			$count_result = $db->execute($sql);
+			$friend_num = 0;
+			while ($row = mysql_fetch_assoc($count_result, MYSQL_BOTH)) {
+				$friend_num = $row["friends_num"];
+			}
+			$friend_num++;
+			$sql = "update user set friends_num = $friend_num where id = {$user_id}";
+			$db->execute($sql);
 			echo "success";
 		}
 		break;
+	case 9:
+		$db = MyUtil::getDB();
+		$sql = "delete from post where id = {$post_id}";
+		if ($db->execute($sql)) {
+			header("location:personal.php");
+		}
+		else{	
+		}
  	default:
  		break;
 }

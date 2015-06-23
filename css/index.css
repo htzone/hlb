@@ -94,6 +94,11 @@
 	color:#000;
 }
 
+.tieba_icon p{
+	font-weight:800;
+	font-size:20px;
+}
+
 /*不喜欢换一个*/
 #dontlike{
 	width:100%;

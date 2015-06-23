@@ -122,10 +122,12 @@ if(isset($_SESSION["user_id"])){
         	?>            
         </div>
         <!-- content 结束 -->
-        
+        <!-- 
+        Copyright© 2015 <a href="www.htzone.cn" style="text-decoration:none; color:#000">www.htzone.cn<a>
+         -->
         <!-- footer 开始 -->
         <div id="footer">
-        Copyright© 2015 <a href="www.htzone.cn" style="text-decoration:none; color:#000">www.htzone.cn<a> 
+        Copyright© 2015-2016 All Rights Reserved
         </div>
         <!-- footer 结束 -->
         

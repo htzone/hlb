@@ -203,7 +203,8 @@ $(document).ready(function(){
 		{	
 			var collect_button = document.getElementById("collect_button");
 			if(xmlHttp.responseText == "success"){
-				collect_button.value = "已收藏"
+				collect_button.value = "已收藏";
+				collect_button.disabled=true;
 			}
 			else{
 				alert("操作失败");
@@ -352,7 +353,7 @@ $(document).ready(function(){
             	<div class='right'>
             	<p id='num'>{$floor}楼</p>
             	<p id='ctt'>{$content}</p>
-            	<p id='ctt'><img src='images/timg.jpg'/><img src='images/timg.jpg'/></p>
+            	<p id='ctt'></p>
             	<p id='info'>{$create_time}</p>
             	</div>
             	</div>";

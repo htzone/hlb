@@ -24,6 +24,15 @@ if (isset($_GET["post_id"])) {
 $db = MyUtil::getDB();
 $sql = "delete from collection where user_id = {$user_id} and tiezi_id = {$post_id}";
 if ($db->execute($sql)) {
+	$sql = "select collection_num from user where id = {$user_id}";
+	$count_result = $db->execute($sql);
+	$collection_num = 1;
+	while ($row = mysql_fetch_assoc($count_result, MYSQL_BOTH)) {
+		$collection_num = $row["collection_num"];
+	}
+	$collection_num--;
+	$sql = "update user set collection_num = $collection_num where id = {$user_id}";
+	$db->execute($sql);
  	echo "<script>location.href='collection.php'</script>";
 } else {
 	echo "<script>window.hostory.go(-1);</script>";
