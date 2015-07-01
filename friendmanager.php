@@ -67,10 +67,10 @@ function showDg(friend_id){
         <!--moremenu 开始-->
         <div id="more_menu">
             	<ul>
-                	<li><a href="personal.php">个人主页</a></li>
-                	<li><a href="tiebamanage.php">贴吧管理</a></li>
+                	<li class="default_moremenu"><a href="personal.php">个人主页</a></li>
+                	<li class="default_moremenu"><a href="tiebamanage.php">贴吧管理</a></li>
                     <li><a href="friendmanager.php">好友管理</a></li>
-                    <li><a href="collection.php">收藏</a></li>  
+                    <li class="default_moremenu"><a href="collection.php">收藏</a></li>
                 </ul>
         </div>
         <!--moremenu 结束-->

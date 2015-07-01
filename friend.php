@@ -147,7 +147,7 @@ function stateChanged()
 	 	var a = document.getElementById('add');
 	 	if(xmlHttp.responseText == "success"){
 	 	 	a.disabled='disabled';
-	 	 	a.value='已加关注';
+	 	 	a.value='已加好友';
 		}
 	 	else {
 			alert(xmlHttp.responseText+"添加好友失败！");

@@ -56,10 +56,9 @@ if($islogined){
 <script type="text/javascript">
 $(document).ready(function(){
 	$(".return").click(function(){
-		$(this).parents(".right").find(".reply_div").slideToggle("slow");
-		
+		$(this).parents(".right").find(".reply_div").slideToggle("slow");	
 	  });
-	}); 
+});
 
 	function collect(post_id){
 		xmlHttp=GetXmlHttpObject()
@@ -165,6 +164,8 @@ $(document).ready(function(){
 
 // 			alert ("回复成功！");
 			document.getElementById("comment_content"+gid).value="";
+// 			$(".return").slideUp("slow");
+			
 		}
 	}
 
@@ -234,6 +235,7 @@ $(document).ready(function(){
 		}
 		return xmlHttp;
 	}
+
 </script>
 </head>
 
@@ -340,6 +342,8 @@ $(document).ready(function(){
             	$image_url = $row["image_url"];
             	$create_time = $row["create_time"];
             	$floor++;
+            	$content = str_replace("\n", "</br>", $content);
+            	$content = str_replace("\r", "</br>", $content);
             	echo "
             	<div class='comment_list'>
             	<div class='left'>
@@ -380,6 +384,8 @@ $(document).ready(function(){
             	$create_time = $row["create_time"];
             	$image_url = $row["image_url"];
             	$floor++;
+            	$content = str_replace("\n", "</br>", $content);
+            	$content = str_replace("\r", "</br>", $content);
             	echo "
             	<div id='comment_list$follow_id' class='comment_list'>
             	<div class='left'>";
@@ -402,7 +408,7 @@ $(document).ready(function(){
             		echo "<input type='button' value='删除' onclick=\"tiezi_operate($follow_id)\"/>";
             	}
             	echo "</p>";
-            	$sql = "select user.id,user.name,user.person_image,comment.content,comment.time from comment,user where gentie_id = {$follow_id} and comment.from_id = user.id";
+            	$sql = "select user.id,user.name,user.person_image,comment.content,comment.time from comment,user where gentie_id = {$follow_id} and comment.from_id = user.id order by comment.time";
             	$comment_result = $db->execute($sql);
             	if($db->getResultRowsNum()){
             		echo "<div class='replydiv' id='replydiv$follow_id'>";

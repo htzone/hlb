@@ -4,13 +4,13 @@ require_once 'class/myutil.class.php';
 session_start ();
 $user_id = -1;
 $islogined = false;
-  if(isset($_SESSION['user_id'])){
-	 $user_id = $_SESSION['user_id'];
-	 $islogined = true;
-  }else{
- 	echo "未登录";
-  }
- 
+if(isset($_SESSION['user_id'])){
+	$user_id = $_SESSION['user_id'];
+	$islogined = true;
+}else{
+	echo "<script>alert('未登陆，请先登陆');</script>";
+}
+
 
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -28,7 +28,7 @@ if (isset ( $_GET ['tieba_id'] )) {
 	$tieba_id = -1;//不能在这个页面执行修改的动作，因为吧务和图片上传都是异步执行的，首先必须存在才行
 }
 ?>
-<script src="javascript/jquery.js"></script>
+<script src="./javascript/jquery.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 	$("#add").click(function(){
@@ -124,6 +124,23 @@ if (isset ( $_GET ['tieba_id'] )) {
 	     //提交当前表单    
 	     theform.submit();
 	 }
+
+		function uploadinfo()
+		{
+			
+			var name = $u('name').value;
+			
+			if(name=="")
+			{
+				alert('贴吧名称不能为空!');
+				
+			}else{		
+
+				$u('modifyform').submit();
+				
+			}
+			
+		}
 </script>
 
 
@@ -134,8 +151,8 @@ if (isset ( $_GET ['tieba_id'] )) {
 <div id="top_menu">
 
 <ul>
-	
-<?php 
+
+<?php
 MyUtil::showTopMenu($islogined);
 ?>
 
@@ -145,35 +162,39 @@ MyUtil::showTopMenu($islogined);
 <!-- top_menu 结束 -->
 
 <div id="register_div">
-<div id="logo"><a href="index.php"><img src="images/logo.png"/></a></div>
+<div id="logo"><a href="index.php"><img src="images/logo.png" /></a></div>
 
 <table border='0' width="100%">
 
 
 
-<tr height='50'><td class='left'>贴吧logo：</td><td class='right'>
-<form action="uppic.php?tieba_id=<?php echo $tieba_id ?>" method="post" enctype="multipart/form-data" target="upframe" onsubmit="uploadimg(this); return false;">
-<input type='file' name='mypic' value='' id='logofile' />
-<input type='submit' value='上传'/>
-</form>
-</td></tr>
+	<tr height='50'>
+		<td class='left'>贴吧logo：</td>
+		<td class='right'>
+		<form action="uppic.php?tieba_id=<?php echo $tieba_id ?>"
+			method="post" enctype="multipart/form-data" target="upframe"
+			onsubmit="uploadimg(this); return false;"><input type='file'
+			name='mypic' value='' id='logofile' /> <input type='submit'
+			value='上传' /></form>
+		</td>
+	</tr>
 
-<form action="class/tieba_modify.class.php?tag=1&tieba_id=<?php echo $tieba_id ?>" method="post" enctype="multipart/form-data">
+	<form
+		action="class/tieba_modify.class.php?tag=1&tieba_id=<?php echo $tieba_id ?>"
+		method="post" enctype="multipart/form-data" id='modifyform'><?php
+		if($tieba_id>=0)
+		{
+			$sql1 = "select id,name ,logo_url,summary from postbar where id=" . trim ( $tieba_id );
 
-<?php
-if($tieba_id>=0)
-{
-$sql1 = "select id,name ,logo_url,summary from postbar where id=" . trim ( $tieba_id );
+			$result = $db->execute ( $sql1 );
 
-$result = $db->execute ( $sql1 );
+			while ( $row = mysql_fetch_array ( $result ) ) {
+				echo "<tr height='100'><td class='left'></td><td class='right'> <div id='showpic'><image width='100'  height='100' src='uploads/".trim ( $row ["logo_url"] )."' /></div></td></tr>";
+				echo "<tr height='100'><td class='left'>贴吧名字：</td><td class='right'><input type='text'id='name' name='name' value='" . trim ( $row ["name"] ) . "'/></td></tr>";
+				echo "<tr height='100'><td class='left'>贴吧简介：</td><td class='right'><textarea name='summary' cols='40' rows='4' draggable='false' dropzone='move'>" . trim ( $row ["summary"] ) . "</textarea></td></tr>";
 
-while ( $row = mysql_fetch_array ( $result ) ) {
-	echo "<tr height='100'><td class='left'></td><td class='right'> <div id='showpic'><image width='100'  height='100' src='uploads/".trim ( $row ["logo_url"] )."' /></div></td></tr>";
-	echo "<tr height='100'><td class='left'>贴吧名字：</td><td class='right'><input type='text' name='name' value='" . trim ( $row ["name"] ) . "'/></td></tr>";
-	echo "<tr height='100'><td class='left'>贴吧简介：</td><td class='right'><textarea name='summary' cols='40' rows='4' draggable='false' dropzone='move'>" . trim ( $row ["summary"] ) . "</textarea></td></tr>";
 
-	
-	?>
+				?>
 	<tr height='100'>
 		<td class='left'>吧务：</td>
 		<td class='right'>
@@ -185,27 +206,27 @@ while ( $row = mysql_fetch_array ( $result ) ) {
 			echo "<span class='bawu'>" . trim ( $row ["name"] ) . "<input class='delete' type='button' value='删除' onclick='deleteBawu(".trim ( $row ["id"] ).",".$tieba_id.")' /></span>";
 		}
 
-}
-}
-?> <span id="add">增加吧务</span></div>
+			}
+		}
+		?> <span id="add">增加吧务</span></div>
 		<div id="add_div"><input id="friendname" type="text"
-			placeholder="输入好友名称" /> <input type="button" onclick='addBawu(<?php echo $tieba_id ?>);'
-			value="确定" /></div>
+			placeholder="输入好友名称" /> <input type="button"
+			onclick='addBawu(<?php echo $tieba_id ?>);' value="确定" /></div>
 		</td>
 	</tr>
 
 	<tr height='50'>
 		<td class='left'></td>
-		<td class='right'><input class='btn' type='submit' value='提交' /> <input
-			class='btn' type='reset' value='重置' /></td>
+		<td class='right'><input class='btn' type='button'
+			onclick='uploadinfo();' value='提交' /> <input class='btn' type='reset'
+			value='重置' /></td>
 	</tr>
-	
+
 	</form>
 
 </table>
-<iframe id="upframe" name="upframe" src="uppic.php"
-		width="300" height="300" style="display:none;"> </iframe>
-</div>
+<iframe id="upframe" name="upframe" src="uppic.php" width="300"
+	height="300" style="display: none;"> </iframe></div>
 </div>
 </body>
 </html>

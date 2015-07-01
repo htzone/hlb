@@ -8,7 +8,10 @@ if(isset($_SESSION['user_id'])){
  $user_id = $_SESSION['user_id'];
  $islogined = true;
   }else{
- 	echo "未登录";
+ 	echo "<script>alert('未登陆，请先登陆');
+ 	location.href('login.php');
+ 	</script>";
+ 	
   }
 ?>
 <html >
@@ -18,7 +21,7 @@ if(isset($_SESSION['user_id'])){
 <link href="css/global.css" rel='stylesheet' type='text/css' />
 <link href="css/register.css" rel='stylesheet' type='text/css' />
 <title>贴吧修改</title>
-<script src="http://localhost/hldb/javascript/jquery.js"></script>
+<script src="./javascript/jquery.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 	$("#add").click(function(){
@@ -26,7 +29,7 @@ if(isset($_SESSION['user_id'])){
 	  });
 	}); 
 </script>
-<script type="text/javascript">
+<script type="text/javascript"><!--
 	function getXmlHttoObject(){
 	//不同获取不同
 	var xmlHttp;
@@ -70,7 +73,7 @@ if(isset($_SESSION['user_id'])){
 		//alert("处理事件的函数:"+id+"/"+tag+"/"+tieba_id);
 		if(myXmlHttp)
 		{			
-			var url="http://localhost/hldb/class/tiebamanage_control.class.php";
+			var url="class/tiebamanage_control.class.php";
 			var data="";
 			if(tag==3)//删除吧务
 			{
@@ -110,7 +113,23 @@ if(isset($_SESSION['user_id'])){
 	{
 		 return document.getElementById(id);
 	}
-</script>
+	function uploadinfo()
+	{
+		
+		var name = $u('name').value;
+		
+		if(name=="")
+		{
+			alert('贴吧名称不能为空!');
+			
+		}else{
+
+			$u('createform').submit();
+		}
+		
+	}
+	
+--></script>
 
 </head>
 
@@ -128,7 +147,7 @@ if(isset($_SESSION['user_id'])){
 <div id="register_div">
 <div id="logo"><a href="index.php"><img src="images/logo.png"/></a></div>
 <form action="class/tieba_modify.class.php?tag=0&bazu_id=<?php echo $user_id?>" method="post"
-	enctype="multipart/form-data">
+	enctype="multipart/form-data" id='createform'>
 <table>
 
 	<tr>
@@ -138,7 +157,7 @@ if(isset($_SESSION['user_id'])){
 	</tr>
 	<tr>
 		<td class='left'>贴吧名字：</td>
-		<td class='right'><input type='text' name='name' value='' /></td>
+		<td class='right'><input type='text' name='name' value='' id='name'/></td>
 	</tr>
 	<tr>
 		<td class='left'>贴吧简介：</td>
@@ -149,7 +168,7 @@ if(isset($_SESSION['user_id'])){
 
 	<tr>
 		<td class='left'></td>
-		<td class='right'><input class='btn' type='submit' value='提交' /> <input
+		<td class='right'><input class='btn' type='button' onclick='uploadinfo();'  value='提交' /> <input
 			class='btn' type='reset' value='重置' /></td>
 	</tr>
 </table>

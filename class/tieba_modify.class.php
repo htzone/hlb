@@ -46,10 +46,31 @@ $sql="";
 
 if($tag==1)
 {
+	
+	$sql4 = "select * from postbar where name='".$name."'";
+	$result4 = $db->execute($sql4);
+	if($db->getResultRowsNum()==0)
+	{	
 	$sql="update postbar set name='".$name."',summary='".$summary."' where id=".$tieba_id;
 
+	}else{
+		$sql="update postbar set name='".$name."',summary='".$summary."' where id=".$tieba_id;
+		
+	}
+
 }else{
+$sql4 = "select * from postbar where name='".$name."'";
+	$result4 = $db->execute($sql4);
+	if($db->getResultRowsNum()==0)
+	{	
 	$sql="insert into postbar(name,logo_url,summary,bazu_id) values('".$name."','".$logoname."','".$summary."','".$bazu_id."')";
+
+	}else{
+		$sql="insert into postbar(name,logo_url,summary,bazu_id) values('".$name."','".$logoname."','".$summary."','".$bazu_id."')";
+		
+		
+	}
+	//$sql="insert into postbar(name,logo_url,summary,bazu_id) values('".$name."','".$logoname."','".$summary."','".$bazu_id."')";
 }
 echo $sql;
 $result = $db->execute($sql);

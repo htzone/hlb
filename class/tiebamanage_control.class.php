@@ -45,7 +45,7 @@ $info="";
 switch($tag)
 {
 
-	case 0://删除贴吧
+	case 0://删除吧务
 		$sql1 = "delete from appoint where bawu_id='".$user_id."' and tieba_id='".$tieba_id."'";
 		if($db->execute($sql1)){
 			//删除成功
@@ -67,27 +67,49 @@ switch($tag)
 
 		$result1 = $db->execute($sql3);
 		//echo "<br/>result:".$result1;
-		if($db->getResultRowsNum()>=0){
+		if($db->getResultRowsNum()>0){
 			while($row =mysql_fetch_array ( $result1 ) )
 			{
 				$user_id=$row['id'];
 			}
+			$sql6 = "select * from appoint where bawu_id='".$user_id."' and tieba_id='".$tieba_id."'";
+			
+			$result2 = $db->execute($sql6);
+			if($db->getResultRowsNum()==0)
+			{
+				$sql4 = "insert into appoint (bazu_id,bawu_id,tieba_id) values('".$bazu_id."','".$user_id."','".$tieba_id."')";
 
-			$sql4 = "insert into appoint (bazu_id,bawu_id,tieba_id) values('".$bazu_id."','".$user_id."','".$tieba_id."')";
-				
-				
-			if($db->execute($sql4))
-			{//插入成功
+
+				if($db->execute($sql4))
+				{//插入成功
+					$sql5 = "select id,name from user where id in (select bawu_id from appoint where tieba_id='" . $tieba_id. "')";
+					$result = $db->execute($sql5);
+					while ( $row = mysql_fetch_array ( $result ) ) {
+						$info = $info. "<span class='bawu'>" . trim ( $row ["name"] ) . "<input class='delete' type='button' value='删除' onclick='deleteBawu(".trim ( $row ["id"] ).",".$tieba_id.")' /></span>";
+					}
+				}else{
 				$sql5 = "select id,name from user where id in (select bawu_id from appoint where tieba_id='" . $tieba_id. "')";
-				$result = $db->execute($sql5);
-				while ( $row = mysql_fetch_array ( $result ) ) {
-					$info = $info. "<span class='bawu'>" . trim ( $row ["name"] ) . "<input class='delete' type='button' value='删除' onclick='deleteBawu(".trim ( $row ["id"] ).",".$tieba_id.")' /></span>";
+					$result = $db->execute($sql5);
+					while ( $row = mysql_fetch_array ( $result ) ) {
+						$info = $info. "<span class='bawu'>" . trim ( $row ["name"] ) . "<input class='delete' type='button' value='删除' onclick='deleteBawu(".trim ( $row ["id"] ).",".$tieba_id.")' /></span>";
+					}
+					$info = $info."<p style='color:red;'>插入失败</p>";
 				}
 			}else{
-				echo "插入失败"+$sql4;
+				$sql5 = "select id,name from user where id in (select bawu_id from appoint where tieba_id='" . $tieba_id. "')";
+					$result = $db->execute($sql5);
+					while ( $row = mysql_fetch_array ( $result ) ) {
+						$info = $info. "<span class='bawu'>" . trim ( $row ["name"] ) . "<input class='delete' type='button' value='删除' onclick='deleteBawu(".trim ( $row ["id"] ).",".$tieba_id.")' /></span>";
+					}
+					$info = $info."<p style='color:red;'>不能重复添加同一个吧务</p>";
 			}
 		}else{
-			echo "没有这个人";
+			$sql5 = "select id,name from user where id in (select bawu_id from appoint where tieba_id='" . $tieba_id. "')";
+					$result = $db->execute($sql5);
+					while ( $row = mysql_fetch_array ( $result ) ) {
+						$info = $info. "<span class='bawu'>" . trim ( $row ["name"] ) . "<input class='delete' type='button' value='删除' onclick='deleteBawu(".trim ( $row ["id"] ).",".$tieba_id.")' /></span>";
+					}
+					$info = $info."<p style='color:red;'>不存在该用户</p>";
 		}
 		break;
 	default:

@@ -100,7 +100,11 @@ switch ($action){
 			$db = MyUtil::getDB();
 			$sql = "insert into follow(content,create_user,tiezi_id) values('{$content}',{$user_id},{$post_id})";
 			if($db->execute($sql)){	
-				echo "<script>location.href='note.php?post_id={$post_id}&tieba_id={$tieba_id}';</script>";
+				$current_time = MyUtil::getCurrentTime();
+				$sql = "update post set last_reply_time = '{$current_time}' where id = {$post_id}";
+				if($db->execute($sql)){
+					echo "<script>location.href='note.php?post_id={$post_id}&tieba_id={$tieba_id}';</script>";
+				}
 			}
 			else{
 				echo "<script>alert('提交失败！');location.href='note.php?post_id={$post_id}&tieba_id={$tieba_id}';</script>";
